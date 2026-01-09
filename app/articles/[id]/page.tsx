@@ -1,6 +1,25 @@
 import Link from "next/link";
+import React from "react";
 
-export default async function ArticlePage({ params }) {
+type ArticlePageProps = {
+  params: {
+    id: string;
+  };
+};
+
+type Post = {
+  id: number;
+  title: string;
+  body: string;
+  tags: string[];
+  reactions: {
+    likes: number;
+    dislikes: number;
+  };
+  views: number;
+};
+
+export default async function ArticlePage({ params }: ArticlePageProps) {
   const { id } = await params;
   const res = await fetch(`https://dummyjson.com/posts/${id}`);
 
@@ -8,7 +27,7 @@ export default async function ArticlePage({ params }) {
     throw new Error("Failed to fetch article");
   }
 
-  const post = await res.json();
+  const post: Post = await res.json();
 
   return (
     <main className="max-w-2xl mx-auto p-6">
